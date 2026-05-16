@@ -93,7 +93,7 @@ public class Tensor implements AutoCloseable {
     }
 
     // Package-private NDArray access (for ops layer)
-    NDArray ndarray() {
+    public NDArray ndarray() {
         return array;
     }
 

@@ -1,0 +1,11 @@
+site_name: Nadar
+site_description: High-performance Java Tensor Library
+theme:
+  name: material
+  palette:
+    scheme: slate # Gives you that sleek, dark-mode hacker aesthetic
+
+nav:
+  - Home: index.md
+  - Tutorials:
+      - Quickstart: quickstart.md
