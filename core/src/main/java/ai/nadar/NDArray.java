@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public class NDArray implements AutoCloseable{
     // Core
-    final MemorySegment segment;
+    public final MemorySegment segment;
     final long offset;
 
     // Description - esk

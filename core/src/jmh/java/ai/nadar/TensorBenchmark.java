@@ -1,4 +1,4 @@
-package java.ai.nadar;
+package ai.nadar;
 
 import org.openjdk.jmh.annotations.*;
 

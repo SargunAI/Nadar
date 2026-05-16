@@ -1,4 +1,8 @@
+import ai.nadar.DType;
+import ai.nadar.Tensor;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TensorTest {
     @Test void zeros() {
