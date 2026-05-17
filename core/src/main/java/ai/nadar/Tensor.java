@@ -111,6 +111,7 @@ public class Tensor implements AutoCloseable {
     }
 
     // TODO: put them in a better spot (lazy so just adding them in the end - low priority)
+    // This arena is never closed (it should be this needs fixing)
     public void relu_(Tensor other) {
         Arena outArena = Arena.ofConfined();
         VectorOps.reluInPlace(other.ndarray());
@@ -153,7 +154,31 @@ public class Tensor implements AutoCloseable {
     /**
      * In-Place Scale operation. Mutates this tensor directly.
      */
+    // TODO: Decide whether to keep this or stay() - (without the underscore)
     public void scale_(float v) {
         VectorOps.scaleInPlace(this.array, v);
+    }
+
+    /**
+     * Matrix multiplication. Returns a new Tensor (M×N).
+     * this: (M×K), other: (K×N) → result: (M×N)
+     * Currently only supports 2D matrices.
+     */
+    public Tensor matmul(Tensor other) {
+        if (this.ndims() != 2 || other.ndims() != 2)
+            throw new IllegalArgumentException("matmul requires 2D tensors, got "
+                    + this.ndims() + "D and " + other.ndims() + "D");
+        if (this.shape()[1] != other.shape()[0])
+            throw new IllegalArgumentException("Shape mismatch: "
+                    + this.shape()[1] + " != " + other.shape()[0]);
+        Arena outArena = Arena.ofConfined();
+        NDArray out = NDArray.zeros(DType.FLOAT32, outArena,
+                this.shape()[0], other.shape()[1]);
+        VectorMulOps.matmul(this.array, other.ndarray(), out);
+        return new Tensor(out, outArena);
+    }
+
+    public String mean() {
+        return String.valueOf(VectorOps.mean(this.array));
     }
 }

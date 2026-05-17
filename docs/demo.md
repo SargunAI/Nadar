@@ -1,7 +1,9 @@
-package ai.nadar;
+# Quick Demo
+This demo showcases how to perform basic Tensor operations using Nadar.
 
+```java
 class Demo {
-    static void main( ) {
+    static void main() {
         IO.println("--- Tensor Engine ---\n");
 
         // ALLOCATION — three factory methods
@@ -84,3 +86,47 @@ class Demo {
         IO.println("--- Engine Shutdown Safely ---");
     }
 }
+```
+
+## Output
+
+```
+--- Tensor Engine ---
+
+1. Allocation
+   weights : 1000x1000 filled with 0.5
+   biases  : 1000x1000 filled with 1.0
+   zeros   : 1000x1000 filled with 0.0
+
+2. Allocating ops
+   weights + biases[0,0]         = 1.5
+
+3. In-place ops
+   after scale_(-1.0)[0,0]       = -1.5
+   after relu_()[0,0]             = 0.0
+
+4. Reductions
+   sum of 1M x 2.0               = 2000000.0
+   mean of 1M x 2.0              = 2.0
+
+5. Element access
+   set [2,3]=99, get [2,3]       = 99.0
+   untouched [0,0]               = 0.0
+
+6. Zero-copy transpose
+   mat[0,3]                      = 7.0
+   transposed[3,0]               = 7.0
+   original shape                = 3x4
+   transposed shape              = 4x3
+
+7. Matrix multiplication
+   (2x3) @ (3x4) shape           = 2x4
+   c[0,0] (should be 3.0)        = 3.0
+   (128x256) @ (256x128) shape   = 128x128
+   c[0,0] (should be 256.0)      = 256.0
+
+8. Formatted output
+NDArray[shape=[3, 3], dtype=FLOAT32]
+[3.14, 3.14, 3.14, 3.14, 3.14, 3.14, 3.14, 3.14, 3.14]
+--- Engine Shutdown Safely ---
+```

@@ -1,3 +1,6 @@
+group = "ai.sargun"
+version = project.findProperty("versionOverride") ?: project.property("VERSION_NAME") as String
+
 plugins {
     id("java")
     id("me.champeau.jmh") version "0.7.3"

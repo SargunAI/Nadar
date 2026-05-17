@@ -7,40 +7,7 @@ The project is aimed to provide high performance, parallel + GPU execution for n
 
 Furthermore, the Nadar is on road to also integrate the work of [Project Babylon](https://openjdk.org/projects/babylon/) along with FFM API for GPU computation for higher dimensional Tensors (which are right now being computed directly on the CPU itself).
 
-check the demo
-```java
-public class Demo {
-    public static void main(String[] args) {
-        try (
-                Tensor weights = Tensor.fill(DType.FLOAT32, 0.5f, 1000, 1000);
-                Tensor biases = Tensor.ones(DType.FLOAT32, 1000, 1000)
-        ) {
-            System.out.println("Created Weights: " + weights.shape()[0] + "x" + weights.shape()[1]);
-            System.out.println("Created Biases:  " + biases.shape()[0] + "x" + biases.shape()[1]);
-
-            try (Tensor preActivation = weights.add(biases)) {
-                System.out.println("Sample value (0.5 + 1.0): " + preActivation.getFloat(0, 0));
-
-                // Let's negate the values and then zero them out with ReLU
-                preActivation.scale(-1.0f);
-                preActivation.relu_(weights);
-                System.out.println("Value after scale(-1) and ReLU (should be 0.0): " + preActivation.getFloat(0, 0));
-
-                float totalVolume = preActivation.sum();
-                System.out.println("Total Sum of Tensor: " + totalVolume);
-            }
-
-            // Testing the Print Formatting
-            try (Tensor small = Tensor.fill(DType.FLOAT32, 0.5f, 3, 3)) {
-                System.out.println("\nFormatted 3x3 Tensor:");
-                System.out.println(small);
-            }
-        }
-
-        System.out.println("close");
-    }
-}
-```
+## Checkout a [quick demo of the library](https://sargunai.github.io/nadar/demo).
 
 ## GOALS (expected to be completed in short term):
 - Refactor the Tensor API for a better DX (similar to that of other ML/DL frameworks). Abstract away everything!

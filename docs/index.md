@@ -1,6 +1,6 @@
 # Nadar
 
-A high-performance, hardware-accelerated N-Dimensional array library for Java.
+A high-performance, Tensor library for Java with native SIMD operations and GPU-accelerated computation(coming soon).
 
 ## Features
 * **Zero-Copy Memory:** Off-heap management using the FFM API.
@@ -8,9 +8,15 @@ A high-performance, hardware-accelerated N-Dimensional array library for Java.
 * **BLAS Backend:** Native C matrix multiplication.
 
 
-## Future Roadmap
+## Quick Demo
+Check this [quick demo](demo.md) on how to use Nadar.
 
+
+## Future Roadmap
 [see](https://github.com/SargunAI/Nadar#:~:text=GOALS)
 
 
-created by [@hardikxk](https://github.com/hardikxk)
+## Getting Started
+See the [Quickstart](quickstart.md) guide.
+
+*created by [@hardikxk](https://github.com/hardikxk)*
