@@ -159,21 +159,77 @@ public class Tensor implements AutoCloseable {
         VectorOps.scaleInPlace(this.array, v);
     }
 
-    /**
-     * Matrix multiplication. Returns a new Tensor (M×N).
-     * this: (M×K), other: (K×N) → result: (M×N)
-     * Currently only supports 2D matrices.
+/**
+     * Matrix multiplication. Returns a new Tensor.
+     * <p>
+     * Supports batched matmul with broadcasting for any dimensionality:
+     * <ul>
+     *   <li>2D:       (M,K) @ (K,N) → (M,N)
+     *   <li>Batched:  (...,M,K) @ (...,K,N) → (...,M,N)
+     *   <li>1D @ 1D:  (K,)   @ (K,)   → (1,)       — dot product
+     *   <li>1D @ ND:  (K,)   @ (...,K,N) → (...,N)
+     *   <li>ND @ 1D:  (...,M,K) @ (K,)   → (...,M)
+     * </ul>
      */
     public Tensor matmul(Tensor other) {
-        if (this.ndims() != 2 || other.ndims() != 2)
-            throw new IllegalArgumentException("matmul requires 2D tensors, got "
-                    + this.ndims() + "D and " + other.ndims() + "D");
-        if (this.shape()[1] != other.shape()[0])
-            throw new IllegalArgumentException("Shape mismatch: "
-                    + this.shape()[1] + " != " + other.shape()[0]);
+        int aRank = this.ndims();
+        int bRank = other.ndims();
+
+        // Compute output shape
+        long[] outShape;
+        if (aRank == 1 && bRank == 1) {
+            outShape = new long[]{1};
+        } else if (aRank == 1) {
+            // (K,) @ (...,K,N) → (...,N)
+            long K = this.shape()[0];
+            long[] bShape = other.shape();
+            if (K != bShape[bRank - 2])
+                throw new IllegalArgumentException("Inner dimensions mismatch: "
+                        + K + " vs " + bShape[bRank - 2]);
+            outShape = new long[bRank - 1];
+            System.arraycopy(bShape, 0, outShape, 0, bRank - 2);
+            outShape[bRank - 2] = bShape[bRank - 1];
+        } else if (bRank == 1) {
+            // (...,M,K) @ (K,) → (...,M)
+            long K = other.shape()[0];
+            long[] aShape = this.shape();
+            if (K != aShape[aRank - 1])
+                throw new IllegalArgumentException("Inner dimensions mismatch: "
+                        + aShape[aRank - 1] + " vs " + K);
+            outShape = new long[aRank - 1];
+            System.arraycopy(aShape, 0, outShape, 0, aRank - 2);
+            outShape[aRank - 2] = aShape[aRank - 2];
+        } else {
+            // Both ≥ 2D
+            long K = this.shape()[aRank - 1];
+            long M = this.shape()[aRank - 2];
+            long N = other.shape()[bRank - 1];
+            if (K != other.shape()[bRank - 2])
+                throw new IllegalArgumentException("Inner dimensions mismatch: "
+                        + K + " != " + other.shape()[bRank - 2]);
+
+            int aBatchRank = aRank - 2;
+            int bBatchRank = bRank - 2;
+            int batchRank = Math.max(aBatchRank, bBatchRank);
+
+            outShape = new long[batchRank + 2];
+            for (int i = 0; i < batchRank; i++) {
+                long da = i < aBatchRank
+                    ? this.shape()[aBatchRank - 1 - i] : 1;
+                long db = i < bBatchRank
+                    ? other.shape()[bBatchRank - 1 - i] : 1;
+                if (da != 1 && db != 1 && da != db)
+                    throw new IllegalArgumentException(
+                        "Incompatible batch dimensions at axis "
+                        + (batchRank - 1 - i) + ": " + da + " vs " + db);
+                outShape[batchRank - 1 - i] = Math.max(da, db);
+            }
+            outShape[batchRank]     = M;
+            outShape[batchRank + 1] = N;
+        }
+
         Arena outArena = Arena.ofConfined();
-        NDArray out = NDArray.zeros(DType.FLOAT32, outArena,
-                this.shape()[0], other.shape()[1]);
+        NDArray out = NDArray.zeros(DType.FLOAT32, outArena, outShape);
         VectorMulOps.matmul(this.array, other.ndarray(), out);
         return new Tensor(out, outArena);
     }
