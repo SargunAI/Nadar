@@ -1,6 +1,6 @@
-import ai.nadar.DType;
-import ai.nadar.NDArray;
-import ai.nadar.VectorOps;
+import ai.sargun.DType;
+import ai.sargun.NDArray;
+import ai.sargun.VectorOps;
 import org.junit.jupiter.api.Test;
 
 import java.lang.foreign.Arena;

@@ -1,8 +1,5 @@
-package ai.nadar;
+package ai.sargun;
 
-import ai.nadar.DType;
-import ai.nadar.NDArray;
-import ai.nadar.VectorOps;
 import org.openjdk.jmh.annotations.*;
 
         import java.lang.foreign.Arena;

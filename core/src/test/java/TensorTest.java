@@ -1,5 +1,5 @@
-import ai.nadar.DType;
-import ai.nadar.Tensor;
+import ai.sargun.DType;
+import ai.sargun.Tensor;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

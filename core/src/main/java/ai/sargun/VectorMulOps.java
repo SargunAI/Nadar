@@ -1,4 +1,4 @@
-package ai.nadar;
+package ai.sargun;
 
 import jdk.incubator.vector.FloatVector;
 import jdk.incubator.vector.VectorMask;

@@ -1,4 +1,4 @@
-package ai.nadar;
+package ai.sargun;
 
 import jdk.incubator.vector.FloatVector;
 import jdk.incubator.vector.VectorSpecies;
@@ -12,6 +12,8 @@ import java.util.Arrays;
 /**
  * The core Array Datatype for Tensor objects and high dimensional numerical operations.
  * Includes standard methods for Tensor initialization
+ * (in general this thing shouldn't be direct access rather only using the abstractions)
+ * (but could potentially allow access to this as it can help make custom Tensor objects - right now leaving as is)
  */
 public class NDArray implements AutoCloseable{
     // Core
@@ -25,6 +27,7 @@ public class NDArray implements AutoCloseable{
 
     // The Arena
     private final Arena arena;
+    private boolean closed = false;
 
     public NDArray(MemorySegment segment, long offset, long[] shape, long[] strides, DType dtype, Arena arena) {
         this.segment = segment;
@@ -35,19 +38,82 @@ public class NDArray implements AutoCloseable{
         this.arena = arena;
     }
 
-    /** 2-D transpose. Returns a view — no data copied. */
-    // NOTE: I will change this later to something more in-place. (because I hate views - doesn't make sense)
+/** 2-D transpose. Returns a view — no data copied. Delegates to the general transpose. */
     public NDArray transpose() {
-        if (this.shape.length != 2){
-            throw new UnsupportedOperationException("Transpose only supports 2D for now.");
+        return transpose(1, 0);
+    }
+
+    /**
+     * General N-dimensional transpose. Returns a zero-copy view with axes permuted
+     * according to the given permutation.
+     *
+     * @param axes a permutation of {0, 1, ..., n-1} specifying the new order of axes
+     * @return a view with shape and strides permuted by {@code axes}
+     * @throws IllegalArgumentException if {@code axes.length != shape.length},
+     *                                  if any axis is out of range, or if there are duplicates
+     */
+    public NDArray transpose(int... axes) {
+        java.util.Objects.requireNonNull(axes, "axes must not be null");
+        if (axes.length != shape.length) {
+            throw new IllegalArgumentException(
+                "Expected " + shape.length + " axes, got " + axes.length);
         }
-        long[] newShape   = new long[]{this.shape[1], this.shape[0]};
-        long[] newStrides = new long[]{this.strides[1], this.strides[0]};
+        boolean[] seen = new boolean[shape.length];
+        for (int i = 0; i < axes.length; i++) {
+            int a = axes[i];
+            if (a < 0 || a >= shape.length) {
+                throw new IllegalArgumentException(
+                    "Axis " + a + " is out of range [0, " + (shape.length - 1) + "]");
+            }
+            if (seen[a]) {
+                throw new IllegalArgumentException("Duplicate axis: " + a);
+            }
+            seen[a] = true;
+        }
+        long[] newShape   = new long[shape.length];
+        long[] newStrides = new long[shape.length];
+        for (int i = 0; i < axes.length; i++) {
+            newShape[i]   = shape[axes[i]];
+            newStrides[i] = strides[axes[i]];
+        }
         // arena = null: view does not own memory, close() is a no-op
         return new NDArray(this.segment, this.offset, newShape, newStrides, this.dtype, null);
     }
 
-    /** Slices the first dimension. Returns a view — no data copied. */
+    /**
+     * Returns a view of this array with a different logical shape, without copying data.
+     * The array must be contiguous (row-major layout). The total number of elements
+     * must remain unchanged.
+     *
+     * @param newShape the desired shape (element count must match current element count)
+     * @return a view with the given shape and computed row-major strides
+     * @throws UnsupportedOperationException if this array is not contiguous
+     * @throws IllegalArgumentException      if the element counts do not match
+     */
+    public NDArray reshape(long... newShape) {
+        java.util.Objects.requireNonNull(newShape, "newShape must not be null");
+        for (long d : newShape) {
+            if (d <= 0) {
+                throw new IllegalArgumentException(
+                    "Invalid reshape dimension: " + d + ". All dimensions must be positive.");
+            }
+        }
+        if (!isContiguous()) {
+            throw new UnsupportedOperationException(
+                "reshape requires a contiguous (row-major) array");
+        }
+        if (elementCount(newShape) != elementCount(this.shape)) {
+            throw new IllegalArgumentException(
+                "New shape element count (" + elementCount(newShape)
+                    + ") does not match current element count (" + elementCount(this.shape) + ")");
+        }
+        long[] newStrides = rowMajorStrides(newShape, this.dtype);
+        return new NDArray(this.segment, this.offset, newShape, newStrides, this.dtype, null);
+    }
+
+    /**
+     * Slices the first dimension. Returns a view no data copied.
+     */
     public NDArray slice(long index) {
         if (index < 0 || index >= shape[0]) {
             throw new IndexOutOfBoundsException();
@@ -68,7 +134,7 @@ public class NDArray implements AutoCloseable{
         }
         strides[shape.length - 1] = dtype.byteSize;
         for (int i = shape.length - 2; i >= 0; i--)
-            strides[i] = strides[i + 1] * shape[i + 1];
+            strides[i] = Math.multiplyExact(strides[i + 1], shape[i + 1]);
         return strides;
     }
 
@@ -86,7 +152,7 @@ public class NDArray implements AutoCloseable{
     protected static long elementCount(long[] shape) {
         long n = 1;
         for (long d : shape){
-            n *= d;
+            n = Math.multiplyExact(n, d);
         }
         return n;
     }
@@ -146,11 +212,11 @@ public class NDArray implements AutoCloseable{
         }
         VectorSpecies<Float> SPECIES = FloatVector.SPECIES_PREFERRED;
         ByteOrder BO = ByteOrder.nativeOrder();
-        int n = (int) elementCount(shape);
-        int bound = SPECIES.loopBound(n);
+        long n = elementCount(shape);
         int step = SPECIES.length();
+        long bound = n - (n % step);
         FloatVector vs = FloatVector.broadcast(SPECIES, value);
-        int i = 0;
+        long i = 0;
         while (i < bound) {
             vs.intoMemorySegment(arr.segment, (long) i * Float.BYTES, BO);
             i += step;
@@ -174,10 +240,11 @@ public class NDArray implements AutoCloseable{
         return new NDArray(seg, 0L, shape, rowMajorStrides(shape, dtype), dtype, arena);
     }
 
-    // THIS IS VERY EXPENSIVE (especially for `Arena.ofShared()` specifically) - need to think of something better (if that's even feasible)
+// THIS IS VERY EXPENSIVE (especially for `Arena.ofShared()` specifically) - need to think of something better (if that's even feasible)
     @Override
     public void close() {
-        if (arena != null){
+        if (arena != null && !closed) {
+            closed = true;
             arena.close();
         }
     }
@@ -222,7 +289,7 @@ public class NDArray implements AutoCloseable{
             if(strides[i] != expectedStride){
                 return false;
             }
-            expectedStride *= shape[i];
+            expectedStride = Math.multiplyExact(expectedStride, shape[i]);
         }
         return true;
     }

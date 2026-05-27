@@ -1,2 +1,2 @@
-rootProject.name = "Nadar"
+rootProject.name = "sargun"
 include("core")

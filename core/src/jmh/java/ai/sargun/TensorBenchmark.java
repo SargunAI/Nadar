@@ -1,4 +1,4 @@
-package ai.nadar;
+package ai.sargun;
 
 import org.openjdk.jmh.annotations.*;
 

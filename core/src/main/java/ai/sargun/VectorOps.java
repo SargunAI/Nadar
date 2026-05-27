@@ -1,7 +1,7 @@
 // This is not perfect. IK. I lost my mind here.
 // This serves as the Base to build upon and has the basic SIMD implementation using the VectorAPI.
 
-package ai.nadar;
+package ai.sargun;
 
 import jdk.incubator.vector.FloatVector;
 import jdk.incubator.vector.VectorMask;
@@ -169,6 +169,7 @@ public final class VectorOps {
 
     /**
      * out = a * b  element-wise
+     * Hadamard product
      */
     public static NDArray mul(NDArray a, NDArray b, Arena arena) {
         checkBinary(a, b);
