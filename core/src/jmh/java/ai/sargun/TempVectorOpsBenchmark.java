@@ -81,10 +81,6 @@ public class TempVectorOpsBenchmark {
     public float scale_flattened_allocating() {
         try (Arena localArena = Arena.ofConfined()) {
             NDArray out = NDArray.zeros(DType.FLOAT32, localArena, a.shape);
-
-            // Paste your flattened loop logic here
-            // ...
-
             return out.getFloat(0);
         }
     }
