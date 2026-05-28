@@ -37,4 +37,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:6.0.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // ND4J for benchmark comparisons
+    implementation("org.nd4j:nd4j-native-platform:1.0.0-M2.1")
 }
