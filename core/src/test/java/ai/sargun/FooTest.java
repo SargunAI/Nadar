@@ -1,3 +1,5 @@
+package ai.sargun;
+
 import org.junit.jupiter.api.Test;
 
 import java.lang.foreign.Arena;

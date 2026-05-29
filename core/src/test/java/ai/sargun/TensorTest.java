@@ -1,5 +1,5 @@
-import ai.sargun.DType;
-import ai.sargun.Tensor;
+package ai.sargun;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

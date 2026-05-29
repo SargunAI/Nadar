@@ -7,6 +7,7 @@ import org.openjdk.jmh.annotations.*;
 
 import java.lang.foreign.Arena;
 import java.util.concurrent.TimeUnit;
+import org.nd4j.linalg.ops.transforms.Transforms;
 
 /**
  * Head-to-head benchmarks: Sargun vs ND4J.
@@ -174,7 +175,7 @@ public class SargunVsND4JBenchmark {
 
     @Benchmark
     public float dot_nd4j() {
-        return (float) nd4jA1d.dot(nd4jB1d).getDouble(0);
+        return (float) nd4jA1d.mul(nd4jB1d).getDouble(0);
     }
 
     // ═══════════════════════════════════════════════════════════════

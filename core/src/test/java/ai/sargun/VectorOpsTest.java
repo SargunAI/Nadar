@@ -1,6 +1,5 @@
-import ai.sargun.DType;
-import ai.sargun.NDArray;
-import ai.sargun.VectorOps;
+package ai.sargun;
+
 import org.junit.jupiter.api.Test;
 
 import java.lang.foreign.Arena;

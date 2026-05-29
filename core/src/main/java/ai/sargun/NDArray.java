@@ -26,7 +26,7 @@ public class NDArray implements AutoCloseable{
     public final DType dtype;
 
     // The Arena
-    private final Arena arena;
+    public final Arena arena;
     private boolean closed = false;
 
     public NDArray(MemorySegment segment, long offset, long[] shape, long[] strides, DType dtype, Arena arena) {
