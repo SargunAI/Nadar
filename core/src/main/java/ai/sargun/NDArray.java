@@ -82,9 +82,7 @@ public class NDArray implements AutoCloseable{
 
     /**
      * Returns a view of this array with a different logical shape, without copying data.
-     * The array must be contiguous (row-major layout). The total number of elements
-     * must remain unchanged.
-     *
+     * The array must be contiguous (row-major layout).
      * @param newShape the desired shape (element count must match current element count)
      * @return a view with the given shape and computed row-major strides
      * @throws UnsupportedOperationException if this array is not contiguous

@@ -4,6 +4,7 @@ import java.lang.foreign.Arena;
 import java.util.Arrays;
 
 // TODO: Improve the docstring to mention all the methods provided by the Tensor class. (also the other docstrings)
+// TODO: There can be a better way to initialize the arena in a different function and call that for every instantiation operation.
 
 /**
  * Public API facade for tensors.
@@ -59,9 +60,7 @@ public class Tensor implements AutoCloseable {
     }
 
     /**
-     * Allocating subtraction. Returns a new Tensor where each element is
-     * the difference of the corresponding elements of {@code this} and {@code other}.
-     * Both tensors must have the same shape.
+     * Allocating subtraction. Returns a new Tensor where each element if the difference of the corresponding elements of {@code this} and {@code other both tensors must have the same shape.
      */
     public Tensor sub(Tensor other) {
         Arena outArena = Arena.ofConfined();
@@ -71,8 +70,8 @@ public class Tensor implements AutoCloseable {
 
     /**
      * In-place addition. Adds {@code other} to {@code this} element-wise.
-     * Mutates this tensor directly — no allocation.
-     * Both tensors must have the same shape.
+     * mutates this tensor directly — no allocation.
+     * NOTE :: both tensors must have the same shape.
      */
     public void add_(Tensor other) {
         VectorOps.addInPlace(this.array, other.ndarray());
@@ -80,7 +79,6 @@ public class Tensor implements AutoCloseable {
 
     /**
      * Returns a defensive copy of the shape array.
-     *
      * @return Tensor (consisting of the sum of the values).
      */
     public long[] shape() {
@@ -115,7 +113,6 @@ public class Tensor implements AutoCloseable {
     /**
      * Returns a transposed view of this tensor (2D only).
      * Swaps axes 0 and 1. No data is copied.
-     *
      * @return a new Tensor that is a transposed view of this one
      * @throws UnsupportedOperationException if this tensor is not 2D
      */
@@ -126,7 +123,6 @@ public class Tensor implements AutoCloseable {
     /**
      * Returns a transposed view of this tensor with axes permuted.
      * No data is copied. The returned tensor shares the same underlying memory.
-     *
      * @param axes a permutation of {0, 1, ..., n-1} specifying the new order of axes
      * @return a new Tensor that is a transposed view of this one
      * @throws IllegalArgumentException if axes is not a valid permutation
@@ -136,10 +132,8 @@ public class Tensor implements AutoCloseable {
     }
 
     /**
-     * Returns a view of this tensor with a different logical shape.
-     * No data is copied. The tensor must be contiguous.
-     * The total number of elements must remain unchanged.
-     *
+     * Returns a *view* of this tensor with a different logical shape that is specified.
+     * *The tensor must be contiguous*.
      * @param newShape the desired shape (element count must match)
      * @return a new Tensor view with the given shape
      * @throws UnsupportedOperationException if this tensor is not contiguous
@@ -152,7 +146,6 @@ public class Tensor implements AutoCloseable {
     /**
      * Returns a view of the first dimension at the given index.
      * No data is copied. Equivalent to slicing along axis 0.
-     *
      * @param index the index along the first dimension
      * @return a new Tensor view with the first dimension removed
      * @throws IndexOutOfBoundsException if index is out of range
