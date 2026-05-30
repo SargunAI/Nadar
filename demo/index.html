@@ -1,0 +1,578 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="High-performance Java Tensor Library">
+      
+      
+      
+        <link rel="canonical" href="https://sargunai.github.io/Nadar/demo/">
+      
+      
+        <link rel="prev" href="../quickstart/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>demo - Nadar</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#quick-demo" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Nadar" class="md-header__button md-logo" aria-label="Nadar" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Nadar
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              demo
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Nadar" class="md-nav__button md-logo" aria-label="Nadar" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Nadar
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    demo
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    demo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="quick-demo">Quick Demo</h1>
+<p>This demo showcases how to perform basic Tensor operations using Nadar.</p>
+<pre><code class="language-java">class Demo {
+    static void main() {
+        IO.println(&quot;--- Tensor Engine ---\n&quot;);
+
+        // ALLOCATION — three factory methods
+        try (
+                Tensor weights = Tensor.fill(DType.FLOAT32, 0.5f, 1000, 1000);
+                Tensor biases  = Tensor.ones(DType.FLOAT32, 1000, 1000);
+                Tensor zeros   = Tensor.zeros(DType.FLOAT32, 1000, 1000)
+        ) {
+            IO.println(&quot;1. Allocation&quot;);
+            IO.println(&quot;   weights : &quot; + weights.shape()[0] + &quot;x&quot; + weights.shape()[1] + &quot; filled with 0.5&quot;);
+            IO.println(&quot;   biases  : &quot; + biases.shape()[0]  + &quot;x&quot; + biases.shape()[1]  + &quot; filled with 1.0&quot;);
+            IO.println(&quot;   zeros   : &quot; + zeros.shape()[0]   + &quot;x&quot; + zeros.shape()[1]   + &quot; filled with 0.0&quot;);
+
+            // ALLOCATING OPS — returns a new Tensor the caller owns
+            IO.println(&quot;\n2. Allocating ops&quot;);
+            try (Tensor preActivation = weights.add(biases)) {
+                IO.println(&quot;   weights + biases[0,0]         = &quot; + preActivation.getFloat(0, 0)); // 1.5
+
+                // IN-PLACE OPS — mutate existing memory, zero allocation
+                IO.println(&quot;\n3. In-place ops&quot;);
+                preActivation.scale_(-1.0f);
+                IO.println(&quot;   after scale_(-1.0)[0,0]       = &quot; + preActivation.getFloat(0, 0)); // -1.5
+                preActivation.relu_();
+                IO.println(&quot;   after relu_()[0,0]             = &quot; + preActivation.getFloat(0, 0)); // 0.0
+            }
+
+            // REDUCTIONS — return primitives, no allocation
+            IO.println(&quot;\n4. Reductions&quot;);
+            try (Tensor sampleData = Tensor.fill(DType.FLOAT32, 2.0f, 1000, 1000)) {
+                IO.println(&quot;   sum of 1M x 2.0               = &quot; + sampleData.sum());   // 2000000.0
+                IO.println(&quot;   mean of 1M x 2.0              = &quot; + sampleData.mean());  // 2.0
+            }
+
+            // ELEMENT ACCESS — get and set individual elements
+            IO.println(&quot;\n5. Element access&quot;);
+            try (Tensor t = Tensor.zeros(DType.FLOAT32, 4, 4)) {
+                t.setFloat(99f, 2, 3);
+                IO.println(&quot;   set [2,3]=99, get [2,3]       = &quot; + t.getFloat(2, 3)); // 99.0
+                IO.println(&quot;   untouched [0,0]               = &quot; + t.getFloat(0, 0)); // 0.0
+            }
+
+            // ZERO-COPY VIEWS — transpose without copying data
+            IO.println(&quot;\n6. Zero-copy transpose&quot;);
+            try (Tensor mat = Tensor.fill(DType.FLOAT32, 0f, 3, 4)) {
+                mat.setFloat(7f, 0, 3);
+                NDArray transposed = mat.ndarray().transpose();
+                IO.println(&quot;   mat[0,3]                      = &quot; + mat.getFloat(0, 3));        // 7.0
+                IO.println(&quot;   transposed[3,0]               = &quot; + transposed.getFloat(3, 0)); // 7.0 same memory
+                IO.println(&quot;   original shape                = &quot; + mat.shape()[0] + &quot;x&quot; + mat.shape()[1]);
+                IO.println(&quot;   transposed shape              = &quot; + transposed.shape[0] + &quot;x&quot; + transposed.shape[1]);
+            }
+
+            // MATRIX MULTIPLICATION — tiled SIMD with FMA
+            IO.println(&quot;\n7. Matrix multiplication&quot;);
+
+            // Small matmul — verify correctness
+            try (Tensor a = Tensor.fill(DType.FLOAT32, 1f, 2, 3);
+                 Tensor b = Tensor.fill(DType.FLOAT32, 1f, 3, 4);
+                 Tensor c = a.matmul(b)) {
+                IO.println(&quot;   (2x3) @ (3x4) shape           = &quot; + c.shape()[0] + &quot;x&quot; + c.shape()[1]);
+                IO.println(&quot;   c[0,0] (should be 3.0)        = &quot; + c.getFloat(0, 0));
+            }
+
+            // Medium matmul — exercises tiling path
+            try (Tensor a = Tensor.fill(DType.FLOAT32, 1f, 128, 256);
+                 Tensor b = Tensor.fill(DType.FLOAT32, 1f, 256, 128);
+                 Tensor c = a.matmul(b)) {
+                IO.println(&quot;   (128x256) @ (256x128) shape   = &quot; + c.shape()[0] + &quot;x&quot; + c.shape()[1]);
+                IO.println(&quot;   c[0,0] (should be 256.0)      = &quot; + c.getFloat(0, 0));
+            }
+
+            // FORMATTED PRINT — toString output
+            IO.println(&quot;\n8. Formatted output&quot;);
+            try (Tensor small = Tensor.fill(DType.FLOAT32, 3.14f, 3, 3)) {
+                IO.println(small.toString());
+            }
+
+        } // weights, biases, zeros freed here
+
+        IO.println(&quot;--- Engine Shutdown Safely ---&quot;);
+    }
+}
+</code></pre>
+<h2 id="output">Output</h2>
+<pre><code>--- Tensor Engine ---
+
+1. Allocation
+   weights : 1000x1000 filled with 0.5
+   biases  : 1000x1000 filled with 1.0
+   zeros   : 1000x1000 filled with 0.0
+
+2. Allocating ops
+   weights + biases[0,0]         = 1.5
+
+3. In-place ops
+   after scale_(-1.0)[0,0]       = -1.5
+   after relu_()[0,0]             = 0.0
+
+4. Reductions
+   sum of 1M x 2.0               = 2000000.0
+   mean of 1M x 2.0              = 2.0
+
+5. Element access
+   set [2,3]=99, get [2,3]       = 99.0
+   untouched [0,0]               = 0.0
+
+6. Zero-copy transpose
+   mat[0,3]                      = 7.0
+   transposed[3,0]               = 7.0
+   original shape                = 3x4
+   transposed shape              = 4x3
+
+7. Matrix multiplication
+   (2x3) @ (3x4) shape           = 2x4
+   c[0,0] (should be 3.0)        = 3.0
+   (128x256) @ (256x128) shape   = 128x128
+   c[0,0] (should be 256.0)      = 256.0
+
+8. Formatted output
+NDArray[shape=[3, 3], dtype=FLOAT32]
+[3.14, 3.14, 3.14, 3.14, 3.14, 3.14, 3.14, 3.14, 3.14]
+--- Engine Shutdown Safely ---
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
